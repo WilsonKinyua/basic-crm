@@ -24,6 +24,6 @@ export class Customer { // Customer Entity
     @UpdateDateColumn({ type: 'timestamp' })
     updatedAt: Date;
 
-    @OneToMany(() => Lead, lead => lead.customer) // One customer can have many leads
+    @OneToMany(() => Lead, lead => lead.customer, { onDelete: 'CASCADE' }) // One customer can have many leads
     leads: Lead[];
 }
