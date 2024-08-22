@@ -42,7 +42,7 @@ getCustomers()
 
 <template>
     <div class="h-full flex-1 flex-col space-y-8 md:flex">
-        <!-- <Input v-model="searchQuery" type="text" placeholder="Search customers..." class="lg:w-1/3" /> -->
+        <Input v-model="searchQuery" type="text" placeholder="Search customers..." class="lg:w-1/3" />
         <DataTable :columns="columns" :data="filteredCustomers" />
     </div>
 </template>

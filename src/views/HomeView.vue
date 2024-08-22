@@ -139,9 +139,31 @@ const handleFormSubmitted = () => {
         <CustomerTable :limit="5" />
       </TabsContent>
       <TabsContent value="customers">
-        <h2 class="text-2xl font-bold tracking-tight">
-          Customers
-        </h2>
+        <div class="flex justify-between items-center py-4">
+          <h2 class="lg:text-2xl font-bold tracking-tight">
+            Customers
+          </h2>
+          <Sheet v-model:open="isSheetOpen">
+            <SheetTrigger>
+              <Button @click="isSheetOpen = false">
+                <Plus /> Add Customer
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader class="text-left">
+                <SheetTitle>
+                  Create a new customer
+                </SheetTitle>
+                <SheetDescription>
+                  <p class="mb-5">
+                    Fill in the form below to create a new customer.
+                  </p>
+                  <CustomerForm @formSubmitted="handleFormSubmitted" />
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
         <CustomerTable />
       </TabsContent>
     </Tabs>

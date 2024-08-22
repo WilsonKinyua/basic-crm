@@ -55,7 +55,7 @@ export const columns: ColumnDef<Customer>[] = [
         },
         cell: ({ row }) => {
             const companyName = row.getValue('companyName')
-            return h('div', { class: 'text-right font-medium' }, companyName ? companyName.toString() : '-')
+            return h('div', { class: 'text-left font-medium' }, companyName ? companyName.toString() : '-')
         },
     },
     {
