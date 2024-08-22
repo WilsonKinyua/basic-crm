@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { Plus } from 'lucide-vue-next';
 import CustomerTable from "@/components/CustomerTable.vue";
@@ -18,6 +18,17 @@ import CustomerForm from '@/components/CustomerForm.vue';
 
 const store = useStore();
 const totalCustomers = computed(() => store.getters['customers/allCustomers'].length);
+const isSheetOpen = ref(false); // Reactive state for Sheet visibility
+
+const closeSheet = () => {
+  isSheetOpen.value = false;
+};
+
+// Handle form submitted event, close the sheet and fetch customers to update the table
+const handleFormSubmitted = () => {
+  closeSheet();
+  store.dispatch('customers/fetchCustomers');
+};
 </script>
 <template>
   <main class="container mx-auto py-10">
@@ -100,18 +111,18 @@ const totalCustomers = computed(() => store.getters['customers/allCustomers'].le
             </CardContent>
           </Card>
         </div>
-        <div class="flex justify-between">
-          <h2 class="text-2xl font-bold tracking-tight">
+        <div class="flex justify-between items-center">
+          <h2 class="lg:text-2xl font-bold tracking-tight">
             Latest Customers
           </h2>
-          <Sheet>
+          <Sheet v-model:open="isSheetOpen">
             <SheetTrigger>
-              <Button>
+              <Button @click="isSheetOpen = false">
                 <Plus /> Add Customer
               </Button>
             </SheetTrigger>
             <SheetContent>
-              <SheetHeader>
+              <SheetHeader class="text-left">
                 <SheetTitle>
                   Create a new customer
                 </SheetTitle>
@@ -119,7 +130,7 @@ const totalCustomers = computed(() => store.getters['customers/allCustomers'].le
                   <p class="mb-5">
                     Fill in the form below to create a new customer.
                   </p>
-                  <CustomerForm />
+                  <CustomerForm @formSubmitted="handleFormSubmitted" />
                 </SheetDescription>
               </SheetHeader>
             </SheetContent>
