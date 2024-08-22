@@ -1,8 +1,9 @@
 import type { Customer } from '@/store/modules/customers'
-import { Trash, Pencil, ArrowUpDown } from 'lucide-vue-next'
+import { Trash, Pencil, ArrowUpDown, Eye } from 'lucide-vue-next'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
-import { Button } from '@/components//ui/button'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 
 export const columns: ColumnDef<Customer>[] = [
     {
@@ -26,7 +27,10 @@ export const columns: ColumnDef<Customer>[] = [
             }, () => ['Email', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
         },
         cell: ({ row }) => {
-            return h('div', { class: 'text-left font-medium lowercase' }, row.getValue('email'))
+            return h('a', {
+                href: `mailto:${row.getValue('email')}`,
+                class: 'text-left font-medium lowercase hover:text-primary hover:underline',
+            }, row.getValue('email'))
         },
     },
     {
@@ -79,10 +83,24 @@ export const columns: ColumnDef<Customer>[] = [
         },
     },
     {
+        accessorKey: 'leads',
+        header: () => h('div', { class: 'text-right font-medium' }, 'Is Lead?'),
+        cell: ({ row }) => {
+            const leads = row.getValue('leads') as any
+            return h('div', { class: 'text-right font-medium' }, leads.length > 0 ? h(Badge, { variant: 'secondary', class: "bg-primary text-white" }, 'Yes') : h(Badge, { variant: 'destructive' }, 'No'))
+        }
+    },
+    {
         accessorKey: 'actions',
         header: () => h('div', { class: 'text-right font-medium' }, 'Actions'),
         cell: ({ row }) => {
-            return h('div', { class: 'text-right font-medium flex float-right' }, [
+            return h('div', { class: 'text-right font-medium flex float-right space-x-3 items-center' }, [
+                h(Eye, {
+                    class: 'cursor-pointer h-4 w-4 text-primary',
+                    onClick: () => {
+                        console.log('View', row.original)
+                    },
+                }),
                 h(Pencil, {
                     class: 'cursor-pointer h-4 w-4 text-blue-500',
                     onClick: () => {

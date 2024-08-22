@@ -8,6 +8,7 @@ export interface Customer {
     companyName?: string;
     createdAt: Date;
     updatedAt: Date;
+    leads?: string[];
 }
 
 interface CustomersState {

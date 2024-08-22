@@ -1,13 +1,13 @@
 <script setup lang="ts" generic="TData, TValue">
 import { Button } from '@/components/ui/button'
 import { ref } from 'vue'
-import type { ColumnDef, SortingState } from '@tanstack/vue-table'
+import type { ColumnDef, SortingState, } from '@tanstack/vue-table'
 import {
     FlexRender,
     getCoreRowModel,
     useVueTable,
     getPaginationRowModel,
-    getSortedRowModel
+    getSortedRowModel,
 } from '@tanstack/vue-table'
 import {
     Table,
