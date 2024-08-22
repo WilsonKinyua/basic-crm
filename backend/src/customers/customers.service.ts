@@ -35,7 +35,7 @@ export class CustomersService {
   }
 
   // remove a customer by id
-  async remove(id: number): Promise<void> {
+  async remove(id: number): Promise<void> {    
     await this.customersRepository.delete(id);
   }
 }
