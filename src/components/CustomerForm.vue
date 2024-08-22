@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { toast } from 'vue-sonner'
 import { useStore } from 'vuex';
 import { useForm } from 'vee-validate'
 import { Input } from '@/components/ui/input';
@@ -16,8 +16,7 @@ const schema = z.object({
     companyName: z.string().optional()
 })
 
-// form state
-const { handleSubmit, values, meta } = useForm({
+const { handleSubmit, values, resetForm } = useForm({
     validationSchema: toTypedSchema(schema),
     initialValues: {
         name: '',
@@ -27,10 +26,17 @@ const { handleSubmit, values, meta } = useForm({
     }
 })
 
-// form submit handler
+const store = useStore();
+
 const onSubmit = handleSubmit((values) => {
-    console.log(values)
+    // create customer
+    store.dispatch('customers/createCustomer', values)
+    // show success message
+    toast.success('Customer created successfully')
+    // reset form
+    resetForm()
 })
+
 </script>
 <template>
     <form @submit="onSubmit" class="space-y-4">
