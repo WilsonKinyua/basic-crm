@@ -20,7 +20,7 @@ export class CustomersService {
 
   // find all customers
   async findAll(): Promise<Customer[]> {
-    return this.customersRepository.find({ relations: ['leads'] });
+    return this.customersRepository.find({ relations: ['leads'], order: { id: 'DESC' } });
   }
 
   // find a customer by id
