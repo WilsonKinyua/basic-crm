@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { columns } from '@/components/customers/columns';
 import type { Customer } from '@/store/modules/customers';
 
+const props = defineProps<{ limit?: number }>();
+
 const store = useStore();
 const customers = computed(() => store.getters['customers/allCustomers']);
 const searchQuery = ref('');
@@ -21,10 +23,10 @@ const getCustomers = () => {
     store.dispatch('customers/fetchCustomers');
 };
 
-// Filter customers based on search query
+// Filter customers based on search query and limit to the specified number of latest customers
 const filteredCustomers = computed(() => {
     const query = searchQuery.value.toLowerCase();
-    return customers.value.filter((customer: Customer) => {
+    const filtered = customers.value.filter((customer: Customer) => {
         return (
             customer.name.toLowerCase().includes(query) ||
             customer.phoneNumber.toLowerCase().includes(query) ||
@@ -32,6 +34,7 @@ const filteredCustomers = computed(() => {
             customer.companyName && customer.companyName.toLowerCase().includes(query)
         );
     });
+    return props.limit ? filtered.slice(0, props.limit) : filtered;
 });
 
 getCustomers()
@@ -39,9 +42,6 @@ getCustomers()
 
 <template>
     <div class="h-full flex-1 flex-col space-y-8 md:flex">
-        <h2 class="text-2xl font-bold tracking-tight">
-            Latest Customers
-        </h2>
         <Input v-model="searchQuery" type="text" placeholder="Search customers..." class="lg:w-1/3" />
         <DataTable :columns="columns" :data="filteredCustomers" />
     </div>

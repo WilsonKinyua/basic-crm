@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import CustomerTable from "@/components/CustomerTable.vue";
+import Card from "@/components/ui/card/Card.vue";
+import CardHeader from "@/components/ui/card/CardHeader.vue";
+import CardTitle from "@/components/ui/card/CardTitle.vue";
+import CardContent from "@/components/ui/card/CardContent.vue";
+import Tabs from "@/components/ui/tabs/Tabs.vue";
+import TabsList from "@/components/ui/tabs/TabsList.vue";
+import TabsTrigger from "@/components/ui/tabs/TabsTrigger.vue";
+import TabsContent from "@/components/ui/tabs/TabsContent.vue";
+
+const store = useStore();
+const totalCustomers = computed(() => store.getters['customers/allCustomers'].length);
+</script>
 <template>
   <main class="container mx-auto py-10">
     <div class="space-y-2">
@@ -39,7 +55,7 @@
             </CardHeader>
             <CardContent>
               <div class="text-2xl font-bold">
-                +2350
+                {{ totalCustomers }}
               </div>
             </CardContent>
           </Card>
@@ -76,20 +92,17 @@
             </CardContent>
           </Card>
         </div>
+        <h2 class="text-2xl font-bold tracking-tight">
+          Latest Customers
+        </h2>
+        <CustomerTable :limit="5" />
+      </TabsContent>
+      <TabsContent value="customers">
+        <h2 class="text-2xl font-bold tracking-tight">
+          Customers
+        </h2>
         <CustomerTable />
       </TabsContent>
     </Tabs>
   </main>
 </template>
-
-<script setup lang="ts">
-import CustomerTable from "@/components/CustomerTable.vue";
-import Card from "@/components/ui/card/Card.vue";
-import CardHeader from "@/components/ui/card/CardHeader.vue";
-import CardTitle from "@/components/ui/card/CardTitle.vue";
-import CardContent from "@/components/ui/card/CardContent.vue";
-import Tabs from "@/components/ui/tabs/Tabs.vue";
-import TabsList from "@/components/ui/tabs/TabsList.vue";
-import TabsTrigger from "@/components/ui/tabs/TabsTrigger.vue";
-import TabsContent from "@/components/ui/tabs/TabsContent.vue";
-</script>
