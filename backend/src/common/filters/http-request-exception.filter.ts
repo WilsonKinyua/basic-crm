@@ -13,8 +13,7 @@ export class HttpRequestExceptionFilter implements ExceptionFilter {
         if (exception instanceof HttpException) {
             const status = exception.getStatus();
             const errorResponse = exception.getResponse();
-            const errorMessage = typeof errorResponse === 'string' ? errorResponse : (errorResponse as any).message;
-            
+            const errorMessage = typeof errorResponse === 'string' ? errorResponse : (errorResponse as any).message;            
             response.status(status).json({
                 statusCode: status,
                 timestamp: new Date().toISOString(),
