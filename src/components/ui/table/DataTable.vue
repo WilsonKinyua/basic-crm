@@ -1,11 +1,14 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table'
+import { Button } from '@/components/ui/button'
+import { ref } from 'vue'
+import type { ColumnDef, SortingState } from '@tanstack/vue-table'
 import {
     FlexRender,
     getCoreRowModel,
     useVueTable,
+    getPaginationRowModel,
+    getSortedRowModel
 } from '@tanstack/vue-table'
-
 import {
     Table,
     TableBody,
@@ -14,16 +17,25 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
+import { valueUpdater } from '@/lib/utils'
 
 const props = defineProps<{
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
 }>()
 
+const sorting = ref<SortingState>([])
+
 const table = useVueTable({
     get data() { return props.data },
     get columns() { return props.columns },
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
+    state: {
+        get sorting() { return sorting.value },
+    },
 })
 </script>
 
@@ -56,5 +68,13 @@ const table = useVueTable({
                 </template>
             </TableBody>
         </Table>
+        <div class="flex items-center justify-end py-4 space-x-2 pr-5">
+            <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">
+                Previous
+            </Button>
+            <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">
+                Next
+            </Button>
+        </div>
     </div>
 </template>
