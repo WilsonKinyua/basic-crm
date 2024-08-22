@@ -10,12 +10,16 @@ import Tabs from "@/components/ui/tabs/Tabs.vue";
 import TabsList from "@/components/ui/tabs/TabsList.vue";
 import TabsTrigger from "@/components/ui/tabs/TabsTrigger.vue";
 import TabsContent from "@/components/ui/tabs/TabsContent.vue";
+import ThemeToggle from '@/components/ThemeToggle.vue';
 
 const store = useStore();
 const totalCustomers = computed(() => store.getters['customers/allCustomers'].length);
 </script>
 <template>
   <main class="container mx-auto py-10">
+    <div class="float-right">
+      <ThemeToggle />
+    </div>
     <div class="space-y-2">
       <h2 class="text-2xl font-bold">
         Customer Relationship Manager (CRM)
