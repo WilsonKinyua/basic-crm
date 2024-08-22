@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { Plus } from 'lucide-vue-next';
 import CustomerTable from "@/components/CustomerTable.vue";
 import Card from "@/components/ui/card/Card.vue";
 import CardHeader from "@/components/ui/card/CardHeader.vue";
@@ -11,6 +12,9 @@ import TabsList from "@/components/ui/tabs/TabsList.vue";
 import TabsTrigger from "@/components/ui/tabs/TabsTrigger.vue";
 import TabsContent from "@/components/ui/tabs/TabsContent.vue";
 import ThemeToggle from '@/components/ThemeToggle.vue';
+import Button from '@/components/ui/button/Button.vue';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, } from '@/components/ui/sheet'
+import CustomerForm from '@/components/CustomerForm.vue';
 
 const store = useStore();
 const totalCustomers = computed(() => store.getters['customers/allCustomers'].length);
@@ -96,9 +100,31 @@ const totalCustomers = computed(() => store.getters['customers/allCustomers'].le
             </CardContent>
           </Card>
         </div>
-        <h2 class="text-2xl font-bold tracking-tight">
-          Latest Customers
-        </h2>
+        <div class="flex justify-between">
+          <h2 class="text-2xl font-bold tracking-tight">
+            Latest Customers
+          </h2>
+          <Sheet>
+            <SheetTrigger>
+              <Button>
+                <Plus /> Add Customer
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>
+                  Create a new customer
+                </SheetTitle>
+                <SheetDescription>
+                  <p class="mb-5">
+                    Fill in the form below to create a new customer.
+                  </p>
+                  <CustomerForm />
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
         <CustomerTable :limit="5" />
       </TabsContent>
       <TabsContent value="customers">
