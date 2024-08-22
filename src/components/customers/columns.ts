@@ -1,34 +1,54 @@
 import type { Customer } from '@/store/modules/customers'
-import { Trash } from 'lucide-vue-next'
-import { Pencil } from 'lucide-vue-next'
+import { Trash, Pencil, ArrowUpDown } from 'lucide-vue-next'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
+import { Button } from '@/components//ui/button'
 
 export const columns: ColumnDef<Customer>[] = [
     {
         accessorKey: 'name',
-        header: () => h('div', { class: 'text-left font-medium' }, 'Name'),
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Name', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+        },
         cell: ({ row }) => {
             return h('div', { class: 'text-left font-medium' }, row.getValue('name'))
         },
     },
     {
         accessorKey: 'email',
-        header: () => h('div', { class: 'text-left font-medium' }, 'Email'),
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Email', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+        },
         cell: ({ row }) => {
             return h('div', { class: 'text-left font-medium lowercase' }, row.getValue('email'))
         },
     },
     {
         accessorKey: 'phoneNumber',
-        header: () => h('div', { class: 'text-left font-medium' }, 'Phone'),
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Phone', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+        },
         cell: ({ row }) => {
             return h('div', { class: 'text-left font-medium' }, row.getValue('phoneNumber'))
         },
     },
     {
         accessorKey: 'companyName',
-        header: () => h('div', { class: 'text-right font-medium' }, 'Company'),
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Company', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+        },
         cell: ({ row }) => {
             const companyName = row.getValue('companyName')
             return h('div', { class: 'text-right font-medium' }, companyName ? companyName.toString() : '-')
@@ -36,14 +56,24 @@ export const columns: ColumnDef<Customer>[] = [
     },
     {
         accessorKey: 'createdAt',
-        header: () => h('div', { class: 'text-left font-medium' }, 'Created At'),
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Created At', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+        },
         cell: ({ row }) => {
             return h('div', { class: 'text-left font-medium' }, new Date(row.getValue('createdAt')).toDateString())
         },
     },
     {
         accessorKey: 'updatedAt',
-        header: () => h('div', { class: 'text-left font-medium' }, 'Updated At'),
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Updated At', h(ArrowUpDown, { class: 'ml-2 h-4 w-4 ' })])
+        },
         cell: ({ row }) => {
             return h('div', { class: 'text-left font-medium' }, new Date(row.getValue('updatedAt')).toDateString())
         },
