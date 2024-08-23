@@ -11,6 +11,10 @@ export const leads = {
     state: {
         leads: [],
     },
+    getters: {
+        allLeads: (state: LeadsState) => state.leads,
+        getLeadById: (state: LeadsState) => (id: number) => state.leads.find(l => l.id === id),
+    },
     mutations: {
         setLeads(state: LeadsState, leads: Lead[]) {
             state.leads = leads;
@@ -45,9 +49,5 @@ export const leads = {
             await axios.delete(`${API_BASE_URL}/leads/${leadId}`);
             commit('deleteLead', leadId);
         },
-    },
-    getters: {
-        allLeads: (state: LeadsState) => state.leads,
-        getLeadById: (state: LeadsState) => (id: number) => state.leads.find(l => l.id === id),
     },
 };
