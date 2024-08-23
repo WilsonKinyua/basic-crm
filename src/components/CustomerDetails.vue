@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import Card from "@/components/ui/card/Card.vue";
 import CardContent from "@/components/ui/card/CardContent.vue";
 import { Badge } from "./ui/badge";
@@ -66,33 +59,6 @@ defineProps<{ customer: Customer | null }>();
             </TableBody>
           </Table>
         </div>
-      </CardContent>
-    </Card>
-    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
-      Conversations / Interactions
-    </h2>
-    <Card>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Type</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Updated At</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow v-for="lead in customer?.leads" :key="lead.id">
-              <TableCell>{{ lead.name ?? customer?.name }}</TableCell>
-              <TableCell>{{ lead.email ?? customer?.email }}</TableCell>
-              <TableCell>{{
-                lead.phoneNumber ?? customer?.phoneNumber
-              }}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
       </CardContent>
     </Card>
   </div>

@@ -26,11 +26,14 @@ import CustomerForm from "@/components/CustomerForm.vue";
 import type { Customer } from "@/types/Customer";
 import InteractionTable from "@/components/InteractionTable.vue";
 import InteractionForm from "@/components/InteractionForm.vue";
+import LeadTable from "@/components/LeadTable.vue";
+import LeadForm from "@/components/LeadForm.vue";
 
 const store = useStore();
 const totalCustomers = computed(() => store.getters["customers/allCustomers"]);
 const isSheetOpen = ref(false); // Reactive state for Sheet visibility
 const isInteractionSheetOpen = ref(false); // Reactive state for Interaction Sheet visibility
+const isLeadSheetOpen = ref(false); // Reactive state for Lead Sheet visibility
 
 const closeSheet = () => {
   isSheetOpen.value = false;
@@ -38,6 +41,10 @@ const closeSheet = () => {
 
 const closeInteractionSheet = () => {
   isInteractionSheetOpen.value = false;
+};
+
+const closeLeadSheet = () => {
+  isLeadSheetOpen.value = false;
 };
 
 // Handle form submitted event, close the sheet and fetch customers to update the table
@@ -51,7 +58,14 @@ const handleInteractionFormSubmitted = () => {
   closeInteractionSheet();
   store.dispatch("interactions/fetchInteractions");
 };
+
+// Handle lead form submitted event, close the sheet and fetch leads to update the table
+const handleLeadFormSubmitted = () => {
+  closeLeadSheet();
+  store.dispatch("leads/fetchLeads");
+};
 </script>
+
 <template>
   <main class="container mx-auto py-10">
     <div class="float-right">
@@ -68,6 +82,7 @@ const handleInteractionFormSubmitted = () => {
       <TabsList>
         <TabsTrigger value="overview"> Overview </TabsTrigger>
         <TabsTrigger value="customers"> Customers </TabsTrigger>
+        <TabsTrigger value="leads"> Leads </TabsTrigger>
         <TabsTrigger value="interactions"> Interactions </TabsTrigger>
       </TabsList>
       <TabsContent value="overview" class="space-y-4">
@@ -222,6 +237,30 @@ const handleInteractionFormSubmitted = () => {
           </Sheet>
         </div>
         <InteractionTable />
+      </TabsContent>
+      <TabsContent value="leads">
+        <div class="flex justify-between items-center py-4">
+          <h2 class="lg:text-2xl font-bold tracking-tight">Leads</h2>
+          <Sheet v-model:open="isLeadSheetOpen">
+            <SheetTrigger>
+              <Button @click="isLeadSheetOpen = false">
+                <Plus /> Add Lead
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader class="text-left">
+                <SheetTitle> Create a new lead </SheetTitle>
+                <SheetDescription>
+                  <p class="mb-5">
+                    Fill in the form below to create a new lead.
+                  </p>
+                  <LeadForm @formSubmitted="handleLeadFormSubmitted" />
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
+        <LeadTable />
       </TabsContent>
     </Tabs>
   </main>

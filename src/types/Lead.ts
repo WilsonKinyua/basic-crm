@@ -1,3 +1,5 @@
+import type { Customer } from "./Customer";
+
 export interface Lead {
     id: number;
     name?: string;
@@ -6,4 +8,5 @@ export interface Lead {
     companyName?: string;
     createdAt: Date;
     updatedAt: Date;
+    customer?: Customer;
 }

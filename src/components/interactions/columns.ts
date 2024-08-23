@@ -1,15 +1,11 @@
-import { Trash2, Edit, ArrowUpDown } from 'lucide-vue-next';
+import { Trash2, ArrowUpDown } from 'lucide-vue-next';
 import type { ColumnDef } from '@tanstack/vue-table';
 import { h } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { Interaction } from '@/types/Interaction';
 
-interface ColumnActions {
-    deleteInteraction: (id: number) => void;
-}
-
-export function createColumns({ deleteInteraction }: ColumnActions): ColumnDef<Interaction>[] {
+export function createColumns({ deleteInteraction }: {deleteInteraction: (id: number) => void}): ColumnDef<Interaction>[] {
     return [
         {
             accessorKey: 'type',
@@ -20,7 +16,7 @@ export function createColumns({ deleteInteraction }: ColumnActions): ColumnDef<I
                 }, () => ['Type', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })]);
             },
             cell: ({ row }) => {
-                return h(Badge, { class: 'text-left font-medium' }, row.getValue('type'));
+                return h(Badge, { class: 'text-left font-medium dark:text-white' }, row.getValue('type'));
             },
             size: 150,
         },
