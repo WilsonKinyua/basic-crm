@@ -6,12 +6,16 @@ import DataTable from '@/components/ui/table/DataTable.vue'
 import { Input } from '@/components/ui/input';
 import { createColumns } from '@/components/customers/columns';
 import type { Customer } from '@/store/modules/customers';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, } from '@/components/ui/sheet'
+import CustomerForm from '@/components/CustomerForm.vue';
 
 const props = defineProps<{ limit?: number }>();
 
 const store = useStore();
 const customers = computed(() => store.getters['customers/allCustomers']);
 const searchQuery = ref('');
+const isSheetOpen = ref(false);
+const selectedCustomer = ref<Customer | null>(null);
 
 // view customer details
 const viewCustomer = (id: number) => {
@@ -19,6 +23,8 @@ const viewCustomer = (id: number) => {
 
 // edit customer details
 const editCustomer = (customer: Customer) => {
+    selectedCustomer.value = customer;
+    isSheetOpen.value = true;
 };
 
 // delete customer
@@ -50,6 +56,12 @@ const filteredCustomers = computed(() => {
 // Create columns for the DataTable component with edit and delete actions
 const columns = createColumns({ viewCustomer, deleteCustomer, editCustomer });
 
+const handleFormSubmitted = () => {
+    isSheetOpen.value = false;
+    getCustomers();
+    selectedCustomer.value = null;
+};
+
 getCustomers()
 </script>
 
@@ -57,5 +69,21 @@ getCustomers()
     <div class="h-full flex-1 flex-col space-y-8 md:flex">
         <Input v-model="searchQuery" type="text" placeholder="Search customers..." class="lg:w-1/3" />
         <DataTable :columns="columns" :data="filteredCustomers" />
+        <Sheet v-model:open="isSheetOpen">
+            <SheetContent>
+                <SheetHeader class="text-left">
+                    <SheetTitle>
+                        {{ selectedCustomer ? 'Edit Customer' : 'Create a new customer' }}
+                    </SheetTitle>
+                    <SheetDescription>
+                        <p class="mb-5">
+                            Fill in the form below to {{ selectedCustomer ? 'edit' : 'create' }} a customer.
+                        </p>
+                        <CustomerForm :customer="selectedCustomer" @formSubmitted="handleFormSubmitted"
+                            v-if="selectedCustomer" />
+                    </SheetDescription>
+                </SheetHeader>
+            </SheetContent>
+        </Sheet>
     </div>
 </template>

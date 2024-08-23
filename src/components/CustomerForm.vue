@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// @ts-ignore
 import { toast } from 'vue-sonner'
 // @ts-ignore
 import { useStore } from 'vuex';
@@ -10,7 +9,10 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import type { Customer } from '@/store/modules/customers';
+
+const props = defineProps<{ customer?: Customer }>();
 
 // form schema
 const schema = z.object({
@@ -20,7 +22,7 @@ const schema = z.object({
     companyName: z.string().optional()
 })
 
-const { handleSubmit, values, resetForm } = useForm({
+const { handleSubmit, values, resetForm, setValues } = useForm({
     validationSchema: toTypedSchema(schema),
     initialValues: {
         name: '',
@@ -34,25 +36,33 @@ const store = useStore();
 const isLoading = ref(false);
 const emit = defineEmits(['formSubmitted']); // emit event to parent component
 
+watch(() => props.customer, (newCustomer) => {
+    if (newCustomer) {
+        setValues(newCustomer);
+    } else {
+        resetForm();
+    }
+}, { immediate: true });
+
 const onSubmit = handleSubmit(async (values) => {
     isLoading.value = true;
     try {
-        // create customer
-        await store.dispatch('customers/createCustomer', values)
-        // show success message
-        toast.success('Customer created successfully')
-        // reset form
-        resetForm()
-        // emit event to parent component
-        emit('formSubmitted')
+        if (props.customer) {
+            // update customer
+            await store.dispatch('customers/updateCustomer', { id: props.customer.id, ...values });
+            toast.success('Customer updated successfully');
+        } else {
+            // create customer
+            await store.dispatch('customers/createCustomer', values);
+            toast.success('Customer created successfully');
+        }
+        resetForm();
+        emit('formSubmitted');
     } catch (error: any) {
-        // check if error response exists and has a message
         if (error.response && error.response.data && error.response.data.message) {
-            // show error message from response
             toast.error(error.response.data.message.join(', '));
         } else {
-            // show generic error message
-            toast.error('Failed to create customer. Please try again');
+            toast.error('Failed to save customer. Please try again');
         }
     } finally {
         isLoading.value = false;
@@ -103,7 +113,7 @@ const onSubmit = handleSubmit(async (values) => {
                 Please wait
                 <Loader2 class="w-4 h-4 mr-2 animate-spin ml-2" />
             </div>
-            <span v-else>Create Customer</span>
+            <span v-else>{{ props.customer ? 'Update Customer' : 'Create Customer' }}</span>
         </Button>
     </form>
 </template>
