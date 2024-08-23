@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 // @ts-ignore
 import { useStore } from "vuex";
 import { Plus } from "lucide-vue-next";
@@ -31,6 +31,7 @@ import LeadForm from "@/components/LeadForm.vue";
 
 const store = useStore();
 const totalCustomers = computed(() => store.getters["customers/allCustomers"]);
+const totalLeads = ref(0);
 const isSheetOpen = ref(false); // Reactive state for Sheet visibility
 const isInteractionSheetOpen = ref(false); // Reactive state for Interaction Sheet visibility
 const isLeadSheetOpen = ref(false); // Reactive state for Lead Sheet visibility
@@ -64,6 +65,21 @@ const handleLeadFormSubmitted = () => {
   closeLeadSheet();
   store.dispatch("leads/fetchLeads");
 };
+
+// Watch for changes in the leads data and update the totalLeads count
+watch(
+  () => store.getters["leads/allLeads"],
+  (newLeads) => {
+    totalLeads.value = newLeads.length;
+  },
+  { immediate: true }
+);
+
+// Fetch leads when the component is mounted
+onMounted(() => {
+  store.dispatch("leads/fetchLeads");
+});
+
 </script>
 
 <template>
@@ -161,7 +177,9 @@ const handleLeadFormSubmitted = () => {
               </svg>
             </CardHeader>
             <CardContent>
-              <div class="text-2xl font-bold">+573</div>
+              <div class="text-2xl font-bold">
+                {{ totalLeads }}
+              </div>
             </CardContent>
           </Card>
         </div>
