@@ -23,11 +23,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import CustomerForm from "@/components/CustomerForm.vue";
+import type { Customer } from "@/types/Customer";
+import InteractionTable from "@/components/InteractionTable.vue";
 
 const store = useStore();
-const totalCustomers = computed(
-  () => store.getters["customers/allCustomers"].length
-);
+const totalCustomers = computed(() => store.getters["customers/allCustomers"]);
 const isSheetOpen = ref(false); // Reactive state for Sheet visibility
 
 const closeSheet = () => {
@@ -57,7 +57,6 @@ const handleFormSubmitted = () => {
         <TabsTrigger value="overview"> Overview </TabsTrigger>
         <TabsTrigger value="customers"> Customers </TabsTrigger>
         <TabsTrigger value="interactions"> Interactions </TabsTrigger>
-        <TabsTrigger value="leads"> Leads </TabsTrigger>
       </TabsList>
       <TabsContent value="overview" class="space-y-4">
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -83,7 +82,7 @@ const handleFormSubmitted = () => {
             </CardHeader>
             <CardContent>
               <div class="text-2xl font-bold">
-                {{ totalCustomers }}
+                {{ totalCustomers.length }}
               </div>
             </CardContent>
           </Card>
@@ -106,7 +105,14 @@ const handleFormSubmitted = () => {
               </svg>
             </CardHeader>
             <CardContent>
-              <div class="text-2xl font-bold">+573</div>
+              <div class="text-2xl font-bold">
+                {{
+                  totalCustomers.filter(
+                    (customer: Customer) =>
+                      customer.leads && customer.leads.length > 0
+                  ).length
+                }}
+              </div>
             </CardContent>
           </Card>
           <Card class="bg-yellow-500 text-white">
@@ -178,6 +184,30 @@ const handleFormSubmitted = () => {
           </Sheet>
         </div>
         <CustomerTable />
+      </TabsContent>
+      <TabsContent value="interactions">
+        <!-- <div class="flex justify-between items-center py-4">
+          <h2 class="lg:text-2xl font-bold tracking-tight">Interactions</h2>
+          <Sheet v-model:open="isSheetOpen">
+            <SheetTrigger>
+              <Button @click="isSheetOpen = false">
+                <Plus /> Add Interaction
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader class="text-left">
+                <SheetTitle> Create a new interaction </SheetTitle>
+                <SheetDescription>
+                  <p class="mb-5">
+                    Fill in the form below to create a new interaction.
+                  </p>
+                  <InteractionForm @formSubmitted="handleFormSubmitted" />
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div> -->
+        <InteractionTable />
       </TabsContent>
     </Tabs>
   </main>
