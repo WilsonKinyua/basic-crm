@@ -25,19 +25,31 @@ import {
 import CustomerForm from "@/components/CustomerForm.vue";
 import type { Customer } from "@/types/Customer";
 import InteractionTable from "@/components/InteractionTable.vue";
+import InteractionForm from "@/components/InteractionForm.vue";
 
 const store = useStore();
 const totalCustomers = computed(() => store.getters["customers/allCustomers"]);
 const isSheetOpen = ref(false); // Reactive state for Sheet visibility
+const isInteractionSheetOpen = ref(false); // Reactive state for Interaction Sheet visibility
 
 const closeSheet = () => {
   isSheetOpen.value = false;
+};
+
+const closeInteractionSheet = () => {
+  isInteractionSheetOpen.value = false;
 };
 
 // Handle form submitted event, close the sheet and fetch customers to update the table
 const handleFormSubmitted = () => {
   closeSheet();
   store.dispatch("customers/fetchCustomers");
+};
+
+// Handle interaction form submitted event, close the sheet and fetch interactions to update the table
+const handleInteractionFormSubmitted = () => {
+  closeInteractionSheet();
+  store.dispatch("interactions/fetchInteractions");
 };
 </script>
 <template>
@@ -186,11 +198,11 @@ const handleFormSubmitted = () => {
         <CustomerTable />
       </TabsContent>
       <TabsContent value="interactions">
-        <!-- <div class="flex justify-between items-center py-4">
+        <div class="flex justify-between items-center py-4">
           <h2 class="lg:text-2xl font-bold tracking-tight">Interactions</h2>
-          <Sheet v-model:open="isSheetOpen">
+          <Sheet v-model:open="isInteractionSheetOpen">
             <SheetTrigger>
-              <Button @click="isSheetOpen = false">
+              <Button @click="isInteractionSheetOpen = false">
                 <Plus /> Add Interaction
               </Button>
             </SheetTrigger>
@@ -201,12 +213,14 @@ const handleFormSubmitted = () => {
                   <p class="mb-5">
                     Fill in the form below to create a new interaction.
                   </p>
-                  <InteractionForm @formSubmitted="handleFormSubmitted" />
+                  <InteractionForm
+                    @formSubmitted="handleInteractionFormSubmitted"
+                  />
                 </SheetDescription>
               </SheetHeader>
             </SheetContent>
           </Sheet>
-        </div> -->
+        </div>
         <InteractionTable />
       </TabsContent>
     </Tabs>

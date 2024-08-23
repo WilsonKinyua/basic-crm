@@ -39,13 +39,20 @@ export class InteractionsService {
     }
 
     async findOne(id: number): Promise<Interaction> {
-        return this.interactionsRepository.findOne({ where: { id } });
+        return this.interactionsRepository.findOne({ where: { id }, relations: ['lead'] });
     }
 
     async update(id: number, updateInteractionDto: UpdateInteractionDto): Promise<Interaction> {
-        const interaction = await this.interactionsRepository.findOne({ where: { id } });
+        const interaction = await this.interactionsRepository.findOne({ where: { id }, relations: ['lead'] });
         if (!interaction) {
-            return null;
+            throw new HttpException('Interaction not found', HttpStatus.NOT_FOUND);
+        }
+        if (updateInteractionDto.leadId && updateInteractionDto.leadId !== interaction.lead.id) {
+            const lead = await this.leadsRepository.findOne({ where: { id: updateInteractionDto.leadId } });
+            if (!lead) {
+                throw new HttpException('Lead not found', HttpStatus.NOT_FOUND);
+            }
+            interaction.lead = lead;
         }
         Object.assign(interaction, updateInteractionDto);
         return this.interactionsRepository.save(interaction);
