@@ -8,6 +8,9 @@ import { createColumns } from '@/components/customers/columns';
 import type { Customer } from '@/store/modules/customers';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, } from '@/components/ui/sheet'
 import CustomerForm from '@/components/CustomerForm.vue';
+import Button from "@/components/ui/button/Button.vue";
+import { ArrowLeft } from 'lucide-vue-next';
+import CustomerDetails from './CustomerDetails.vue';
 
 const props = defineProps<{ limit?: number }>();
 
@@ -16,9 +19,12 @@ const customers = computed(() => store.getters['customers/allCustomers']);
 const searchQuery = ref('');
 const isSheetOpen = ref(false);
 const selectedCustomer = ref<Customer | null>(null);
+const isViewingCustomerDetails = ref(false);
 
 // view customer details
 const viewCustomer = (id: number) => {
+    selectedCustomer.value = customers.value.find((customer: Customer) => customer.id === id);
+    isViewingCustomerDetails.value = true;
 };
 
 // edit customer details
@@ -67,23 +73,33 @@ getCustomers()
 
 <template>
     <div class="h-full flex-1 flex-col space-y-8 md:flex">
-        <Input v-model="searchQuery" type="text" placeholder="Search customers..." class="lg:w-1/3" />
-        <DataTable :columns="columns" :data="filteredCustomers" />
-        <Sheet v-model:open="isSheetOpen">
-            <SheetContent>
-                <SheetHeader class="text-left">
-                    <SheetTitle>
-                        {{ selectedCustomer ? 'Edit Customer' : 'Create a new customer' }}
-                    </SheetTitle>
-                    <SheetDescription>
-                        <p class="mb-5">
-                            Fill in the form below to {{ selectedCustomer ? 'edit' : 'create' }} a customer.
-                        </p>
-                        <CustomerForm :customer="selectedCustomer" @formSubmitted="handleFormSubmitted"
-                            v-if="selectedCustomer" />
-                    </SheetDescription>
-                </SheetHeader>
-            </SheetContent>
-        </Sheet>
+        <div v-if="isViewingCustomerDetails">
+            <Button variant="secondary" class="flex items-center space-x-2 mb-5"
+                @click="isViewingCustomerDetails = false">
+                <ArrowLeft class="w-6 h-6" />
+                <span>Back</span>
+            </Button>
+            <CustomerDetails v-if="selectedCustomer" :customer="selectedCustomer" />
+        </div>
+        <div v-else class="space-y-8">
+            <Input v-model="searchQuery" type="text" placeholder="Search customers..." class="lg:w-1/3" />
+            <DataTable :columns="columns" :data="filteredCustomers" />
+            <Sheet v-model:open="isSheetOpen">
+                <SheetContent>
+                    <SheetHeader class="text-left">
+                        <SheetTitle>
+                            {{ selectedCustomer ? 'Edit Customer' : 'Create a new customer' }}
+                        </SheetTitle>
+                        <SheetDescription>
+                            <p class="mb-5">
+                                Fill in the form below to {{ selectedCustomer ? 'edit' : 'create' }} a customer.
+                            </p>
+                            <CustomerForm :customer="selectedCustomer" @formSubmitted="handleFormSubmitted"
+                                v-if="selectedCustomer" />
+                        </SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
+        </div>
     </div>
 </template>

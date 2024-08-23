@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { Lead } from './leads';
 
 export interface Customer {
     id: number;
@@ -8,7 +9,7 @@ export interface Customer {
     companyName?: string;
     createdAt: Date;
     updatedAt: Date;
-    leads?: string[];
+    leads?: Lead[];
 }
 
 interface CustomersState {
