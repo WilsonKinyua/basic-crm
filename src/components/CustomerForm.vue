@@ -1,5 +1,7 @@
 <script setup lang="ts">
+// @ts-ignore
 import { toast } from 'vue-sonner'
+// @ts-ignore
 import { useStore } from 'vuex';
 import { useForm } from 'vee-validate'
 import { Loader2 } from "lucide-vue-next"

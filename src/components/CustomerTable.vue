@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+// @ts-ignore
 import { useStore } from 'vuex';
 import DataTable from '@/components/ui/table/DataTable.vue'
 import { Input } from '@/components/ui/input';

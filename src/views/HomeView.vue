@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+// @ts-ignore
 import { useStore } from 'vuex';
 import { Plus } from 'lucide-vue-next';
 import CustomerTable from "@/components/CustomerTable.vue";
