@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
 // @ts-ignore
-import { useStore } from 'vuex';
-import { Plus } from 'lucide-vue-next';
+import { useStore } from "vuex";
+import { Plus } from "lucide-vue-next";
 import CustomerTable from "@/components/CustomerTable.vue";
 import Card from "@/components/ui/card/Card.vue";
 import CardHeader from "@/components/ui/card/CardHeader.vue";
@@ -12,13 +12,22 @@ import Tabs from "@/components/ui/tabs/Tabs.vue";
 import TabsList from "@/components/ui/tabs/TabsList.vue";
 import TabsTrigger from "@/components/ui/tabs/TabsTrigger.vue";
 import TabsContent from "@/components/ui/tabs/TabsContent.vue";
-import ThemeToggle from '@/components/ThemeToggle.vue';
-import Button from '@/components/ui/button/Button.vue';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, } from '@/components/ui/sheet'
-import CustomerForm from '@/components/CustomerForm.vue';
+import ThemeToggle from "@/components/ThemeToggle.vue";
+import Button from "@/components/ui/button/Button.vue";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import CustomerForm from "@/components/CustomerForm.vue";
 
 const store = useStore();
-const totalCustomers = computed(() => store.getters['customers/allCustomers'].length);
+const totalCustomers = computed(
+  () => store.getters["customers/allCustomers"].length
+);
 const isSheetOpen = ref(false); // Reactive state for Sheet visibility
 
 const closeSheet = () => {
@@ -28,7 +37,7 @@ const closeSheet = () => {
 // Handle form submitted event, close the sheet and fetch customers to update the table
 const handleFormSubmitted = () => {
   closeSheet();
-  store.dispatch('customers/fetchCustomers');
+  store.dispatch("customers/fetchCustomers");
 };
 </script>
 <template>
@@ -37,37 +46,36 @@ const handleFormSubmitted = () => {
       <ThemeToggle />
     </div>
     <div class="space-y-2">
-      <h2 class="text-2xl font-bold">
-        Customer Relationship Manager (CRM)
-      </h2>
+      <h2 class="text-2xl font-bold">Customer Relationship Manager (CRM)</h2>
       <p class="text-sm text-muted-foreground leading-6 font-normal">
-        Basic CRM helps businesses manage interactions with current and potential customers.
+        Basic CRM helps businesses manage interactions with current and
+        potential customers.
       </p>
     </div>
     <Tabs default-value="overview" class="space-y-4 mt-10">
       <TabsList>
-        <TabsTrigger value="overview">
-          Overview
-        </TabsTrigger>
-        <TabsTrigger value="customers">
-          Customers
-        </TabsTrigger>
-        <TabsTrigger value="interactions">
-          Interactions
-        </TabsTrigger>
-        <TabsTrigger value="leads">
-          Leads
-        </TabsTrigger>
+        <TabsTrigger value="overview"> Overview </TabsTrigger>
+        <TabsTrigger value="customers"> Customers </TabsTrigger>
+        <TabsTrigger value="interactions"> Interactions </TabsTrigger>
+        <TabsTrigger value="leads"> Leads </TabsTrigger>
       </TabsList>
       <TabsContent value="overview" class="space-y-4">
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card class="bg-primary text-white">
-            <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle class="text-sm font-medium">
-                Customers
-              </CardTitle>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" class="h-4 w-4 text-white">
+            <CardHeader
+              class="flex flex-row items-center justify-between space-y-0 pb-2"
+            >
+              <CardTitle class="text-sm font-medium"> Customers </CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                class="h-4 w-4 text-white"
+              >
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
@@ -80,42 +88,52 @@ const handleFormSubmitted = () => {
             </CardContent>
           </Card>
           <Card class="bg-black text-white">
-            <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle class="text-sm font-medium">
-                Leads
-              </CardTitle>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" class="h-4 w-4 text-white">
+            <CardHeader
+              class="flex flex-row items-center justify-between space-y-0 pb-2"
+            >
+              <CardTitle class="text-sm font-medium"> Leads </CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                class="h-4 w-4 text-white"
+              >
                 <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
               </svg>
             </CardHeader>
             <CardContent>
-              <div class="text-2xl font-bold">
-                +573
-              </div>
+              <div class="text-2xl font-bold">+573</div>
             </CardContent>
           </Card>
           <Card class="bg-yellow-500 text-white">
-            <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle class="text-sm font-medium">
-                Interactions
-              </CardTitle>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" class="h-4 w-4 text-white">
+            <CardHeader
+              class="flex flex-row items-center justify-between space-y-0 pb-2"
+            >
+              <CardTitle class="text-sm font-medium"> Interactions </CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                class="h-4 w-4 text-white"
+              >
                 <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
               </svg>
             </CardHeader>
             <CardContent>
-              <div class="text-2xl font-bold">
-                +573
-              </div>
+              <div class="text-2xl font-bold">+573</div>
             </CardContent>
           </Card>
         </div>
         <div class="flex justify-between items-center">
-          <h2 class="lg:text-2xl font-bold tracking-tight">
-            Latest Customers
-          </h2>
+          <h2 class="lg:text-2xl font-bold tracking-tight">Latest Customers</h2>
           <Sheet v-model:open="isSheetOpen">
             <SheetTrigger>
               <Button @click="isSheetOpen = false">
@@ -124,9 +142,7 @@ const handleFormSubmitted = () => {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader class="text-left">
-                <SheetTitle>
-                  Create a new customer
-                </SheetTitle>
+                <SheetTitle> Create a new customer </SheetTitle>
                 <SheetDescription>
                   <p class="mb-5">
                     Fill in the form below to create a new customer.
@@ -141,9 +157,7 @@ const handleFormSubmitted = () => {
       </TabsContent>
       <TabsContent value="customers">
         <div class="flex justify-between items-center py-4">
-          <h2 class="lg:text-2xl font-bold tracking-tight">
-            Customers
-          </h2>
+          <h2 class="lg:text-2xl font-bold tracking-tight">Customers</h2>
           <Sheet v-model:open="isSheetOpen">
             <SheetTrigger>
               <Button @click="isSheetOpen = false">
@@ -152,9 +166,7 @@ const handleFormSubmitted = () => {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader class="text-left">
-                <SheetTitle>
-                  Create a new customer
-                </SheetTitle>
+                <SheetTitle> Create a new customer </SheetTitle>
                 <SheetDescription>
                   <p class="mb-5">
                     Fill in the form below to create a new customer.

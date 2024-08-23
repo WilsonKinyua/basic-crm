@@ -1,15 +1,5 @@
+import type { Lead } from '@/types/Lead';
 import axios from 'axios';
-
-export interface Lead {
-    id: number;
-    name?: string;
-    email?: string;
-    phoneNumber?: string;
-    companyName?: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
 interface LeadsState {
     leads: Lead[];
 }

@@ -1,9 +1,9 @@
-import type { Customer } from '@/store/modules/customers'
 import { Trash, Pencil, ArrowUpDown, Eye } from 'lucide-vue-next'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import type { Customer } from '@/types/Customer'
 
 export function createColumns({ viewCustomer, deleteCustomer, editCustomer }: { viewCustomer: (id: number) => void, deleteCustomer: (id: number) => void, editCustomer: (customer: Customer) => void }): ColumnDef<Customer>[] {
     return [
