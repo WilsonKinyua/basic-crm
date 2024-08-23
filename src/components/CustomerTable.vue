@@ -13,15 +13,22 @@ const store = useStore();
 const customers = computed(() => store.getters['customers/allCustomers']);
 const searchQuery = ref('');
 
+// view customer details
+const viewCustomer = (id: number) => {
+};
+
+// edit customer details
 const editCustomer = (customer: Customer) => {
 };
 
+// delete customer
 const deleteCustomer = (id: number) => {
     if (confirm('Are you sure you want to delete this customer?')) {
         store.dispatch('customers/deleteCustomer', id);
     }
 };
 
+// fetch customers from the store
 const getCustomers = () => {
     store.dispatch('customers/fetchCustomers');
 };
@@ -41,7 +48,7 @@ const filteredCustomers = computed(() => {
 });
 
 // Create columns for the DataTable component with edit and delete actions
-const columns = createColumns({ deleteCustomer, editCustomer });
+const columns = createColumns({ viewCustomer, deleteCustomer, editCustomer });
 
 getCustomers()
 </script>

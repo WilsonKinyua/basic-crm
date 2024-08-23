@@ -5,7 +5,7 @@ import { h } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
-export function createColumns({ deleteCustomer, editCustomer }: { deleteCustomer: (id: number) => void, editCustomer: (customer: Customer) => void }): ColumnDef<Customer>[] {
+export function createColumns({ viewCustomer, deleteCustomer, editCustomer }: { viewCustomer: (id: number) => void, deleteCustomer: (id: number) => void, editCustomer: (customer: Customer) => void }): ColumnDef<Customer>[] {
     return [
         {
             accessorKey: 'name',
@@ -99,11 +99,13 @@ export function createColumns({ deleteCustomer, editCustomer }: { deleteCustomer
                     h(Eye, {
                         class: 'cursor-pointer h-4 w-4 text-primary',
                         onClick: () => {
+                            viewCustomer(row.original.id);
                         },
                     }),
                     h(Pencil, {
                         class: 'cursor-pointer h-4 w-4 text-blue-500',
                         onClick: () => {
+                            editCustomer(row.original);
                         },
                     }),
                     h(Trash, {
