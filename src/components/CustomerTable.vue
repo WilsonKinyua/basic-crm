@@ -4,7 +4,7 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import DataTable from '@/components/ui/table/DataTable.vue'
 import { Input } from '@/components/ui/input';
-import { columns } from '@/components/customers/columns';
+import { createColumns } from '@/components/customers/columns';
 import type { Customer } from '@/store/modules/customers';
 
 const props = defineProps<{ limit?: number }>();
@@ -17,7 +17,9 @@ const editCustomer = (customer: Customer) => {
 };
 
 const deleteCustomer = (id: number) => {
-    store.dispatch('customers/deleteCustomer', id);
+    if (confirm('Are you sure you want to delete this customer?')) {
+        store.dispatch('customers/deleteCustomer', id);
+    }
 };
 
 const getCustomers = () => {
@@ -37,6 +39,9 @@ const filteredCustomers = computed(() => {
     });
     return props.limit ? filtered.slice(0, props.limit) : filtered;
 });
+
+// Create columns for the DataTable component with edit and delete actions
+const columns = createColumns({ deleteCustomer, editCustomer });
 
 getCustomers()
 </script>

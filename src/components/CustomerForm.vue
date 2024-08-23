@@ -46,8 +46,6 @@ const onSubmit = handleSubmit(async (values) => {
         // emit event to parent component
         emit('formSubmitted')
     } catch (error: any) {
-        console.log(error);
-
         // check if error response exists and has a message
         if (error.response && error.response.data && error.response.data.message) {
             // show error message from response
